@@ -1,4 +1,4 @@
-using ProjectMars.Drivers;
+﻿using ProjectMars.Drivers;
 using ProjectMars.Pages;
 using ProjectMars.Utilities;
 using System;
@@ -10,10 +10,10 @@ using static ProjectMars.Utilities.Configue;
 
 namespace ProjectMars.Tests
 {
-    public class ShareSkillTest
+    public class SkillPageTest
     {
         private LoginPages loginPages;
-        private ShareskillPages shareskillPages;
+        private SkillPage skillPage;
         [SetUp]
         public void Setup()
         {
@@ -21,28 +21,28 @@ namespace ProjectMars.Tests
             DriverFactory.driver.Navigate().GoToUrl(Config.BaseUrl);
             var waitHelper = new WaitHelpers(DriverFactory.driver);
             loginPages = new LoginPages(DriverFactory.driver, waitHelper);
-            shareskillPages = new ShareskillPages(DriverFactory.driver, waitHelper);
+            skillPage = new SkillPage(DriverFactory.driver, waitHelper);
 
         }
         [Test]
-        public void NegativeShareSkilll()
+        public void TestSkillsPositive()
         {
             loginPages.ClickSignIn();
             loginPages.EnterusernamePassword(Config.username, Config.password);
             loginPages.clickLoginbtn();
-            shareskillPages.ShareSkill();
-            string ShareskillMessage = shareskillPages.ShareskillNotify(5);
-            Assert.That(ShareskillMessage, Is.EqualTo("Please complete the form correctly."), "Error message not displayed");
-
-
+            loginPages.PositiveSkills();
         }
         [Test]
-        public void SaveShareSkillinfo()
+        public void NegativeSkills()
         {
             loginPages.ClickSignIn();
             loginPages.EnterusernamePassword(Config.username, Config.password);
             loginPages.clickLoginbtn();
-            shareskillPages.FillShareSkillForm();
+            loginPages.ClickSkills();
+            string errorMessage = loginPages.SkillErrorMessages();
+            Assert.That(errorMessage, Is.EqualTo("Please enter skill and experience level"), "Validation message not displayed");
+
+
         }
     }
 }
