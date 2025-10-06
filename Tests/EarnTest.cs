@@ -1,4 +1,4 @@
-using ProjectMars.Drivers;
+﻿using ProjectMars.Drivers;
 using ProjectMars.Pages;
 using ProjectMars.Utilities;
 using System;
@@ -10,10 +10,10 @@ using static ProjectMars.Utilities.Configue;
 
 namespace ProjectMars.Tests
 {
-    public class ShareSkillTest
+    public class EarnTest
     {
         private LoginPages loginPages;
-        private ShareskillPages shareskillPages;
+        private EarnPage earnPage;
         [SetUp]
         public void Setup()
         {
@@ -21,28 +21,27 @@ namespace ProjectMars.Tests
             DriverFactory.driver.Navigate().GoToUrl(Config.BaseUrl);
             var waitHelper = new WaitHelpers(DriverFactory.driver);
             loginPages = new LoginPages(DriverFactory.driver, waitHelper);
-            shareskillPages = new ShareskillPages(DriverFactory.driver, waitHelper);
+            earnPage = new EarnPage(DriverFactory.driver, waitHelper);
 
         }
         [Test]
-        public void NegativeShareSkilll()
+        public void Testearn()
         {
             loginPages.ClickSignIn();
             loginPages.EnterusernamePassword(Config.username, Config.password);
             loginPages.clickLoginbtn();
-            shareskillPages.ShareSkill();
-            string ShareskillMessage = shareskillPages.ShareskillNotify(5);
-            Assert.That(ShareskillMessage, Is.EqualTo("Please complete the form correctly."), "Error message not displayed");
+            loginPages.Clickearn();
+            string msg = loginPages.EarnTargetUpdated();
+            Assert.That(msg, Is.EqualTo("Availability updated"), "no messages");
 
 
-        }
-        [Test]
-        public void SaveShareSkillinfo()
-        {
-            loginPages.ClickSignIn();
-            loginPages.EnterusernamePassword(Config.username, Config.password);
-            loginPages.clickLoginbtn();
-            shareskillPages.FillShareSkillForm();
+
+
+
+
+
+
+
         }
     }
 }

@@ -1,4 +1,4 @@
-using ProjectMars.Drivers;
+﻿using ProjectMars.Drivers;
 using ProjectMars.Pages;
 using ProjectMars.Utilities;
 using System;
@@ -10,10 +10,10 @@ using static ProjectMars.Utilities.Configue;
 
 namespace ProjectMars.Tests
 {
-    public class ShareSkillTest
+    public class EducationTest
     {
         private LoginPages loginPages;
-        private ShareskillPages shareskillPages;
+        private EducationPage educationPage;
         [SetUp]
         public void Setup()
         {
@@ -21,28 +21,19 @@ namespace ProjectMars.Tests
             DriverFactory.driver.Navigate().GoToUrl(Config.BaseUrl);
             var waitHelper = new WaitHelpers(DriverFactory.driver);
             loginPages = new LoginPages(DriverFactory.driver, waitHelper);
-            shareskillPages = new ShareskillPages(DriverFactory.driver, waitHelper);
+            educationPage = new EducationPage(DriverFactory.driver, waitHelper);
 
         }
         [Test]
-        public void NegativeShareSkilll()
+        public void TestEducationNegative()
         {
+
             loginPages.ClickSignIn();
             loginPages.EnterusernamePassword(Config.username, Config.password);
             loginPages.clickLoginbtn();
-            shareskillPages.ShareSkill();
-            string ShareskillMessage = shareskillPages.ShareskillNotify(5);
-            Assert.That(ShareskillMessage, Is.EqualTo("Please complete the form correctly."), "Error message not displayed");
-
-
-        }
-        [Test]
-        public void SaveShareSkillinfo()
-        {
-            loginPages.ClickSignIn();
-            loginPages.EnterusernamePassword(Config.username, Config.password);
-            loginPages.clickLoginbtn();
-            shareskillPages.FillShareSkillForm();
+            educationPage.NegativeTestEducation();
+            string errorMessage = educationPage.GetEducationErrorMessage();
+            Assert.That(errorMessage, Is.EqualTo("Please enter all the fields"), "Expected error message not displayed!");
         }
     }
 }
